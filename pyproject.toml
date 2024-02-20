@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "connect-dev-ssh"
+name = "dssh"
 version = "0.1.0"
 description = "SSH server manager on the basis of environments"
 authors = ["Saurav Sharma"]
