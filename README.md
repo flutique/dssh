@@ -7,7 +7,7 @@ This is simple and elegant python module that helps you to manage your ssh serve
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
 
 ```bash
-pip install connect-dev-ssh
+pip install dssh
 ```
 
 ## Usage
