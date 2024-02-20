@@ -1,6 +1,6 @@
 [tool.poetry]
-name = "connect-dev-ssh"
-version = "0.1.0"
+name = "dssh"
+version = "0.3.0"
 description = "SSH server manager on the basis of environments"
 authors = ["Saurav Sharma"]
 readme = "README.md"
@@ -17,4 +17,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-dssh = "connect_dev_ssh.main:run_cli"
+dssh = "dssh.main:run_cli"
