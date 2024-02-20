@@ -49,7 +49,7 @@ def select_server_option(environment):
 
 
 def list_environments():
-    table = Table("Available Environment")
+    table = Table("Available Environments")
     for env in data:
         table.add_row(env)
     console.print(table)
