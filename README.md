@@ -23,7 +23,7 @@ New Environment name: DEV
 ```
 
 ### Add new server to an environment
-```
+```bash
 $ dssh addserver
 ┏━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Available Environments ┃
@@ -41,7 +41,7 @@ Server hostname: 10.10.0.1
 ```
 
 ### Connect to a server
-```
+```bash
 $ dssh connect  
 ┏━━━━━━━━━━━━━┓
 ┃ Environment ┃
