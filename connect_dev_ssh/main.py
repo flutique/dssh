@@ -1,5 +1,6 @@
 import json
 import os
+import os.path
 import sys
 
 import pexpect
@@ -10,10 +11,6 @@ from rich import print
 from rich.console import Console
 from rich.table import Table
 from typing_extensions import Annotated
-
-
-import os.path
-
 
 app = typer.Typer()
 console = Console()
@@ -51,6 +48,20 @@ def select_server_option(environment):
     return selected_option
 
 
+def list_environments():
+    table = Table("Available Environment")
+    for env in data:
+        table.add_row(env)
+    console.print(table)
+
+
+def list_servers(environment):
+    table = Table("Availbale Servers")
+    for server in data.get(environment, {}):
+        table.add_row(server)
+    console.print(table)
+
+
 def ssh_interactive_shell(hostname, username, password=None, port=22):
     try:
         # Spawn SSH session
@@ -82,11 +93,7 @@ def connect_to_server(
         typer.Option(help="Environment name", rich_help_panel="Environment name"),
     ],
 ):
-    table = Table("Servers")
-    for server in data.get(environment, {}):
-        table.add_row(server)
-    console.print(table)
-
+    list_servers(environment)
     server_name = select_server_option(environment)
     if server_name not in data.get(environment):
         print(f"[bold red]ERROR: Server name {server_name} not found![/bold red]")
@@ -103,11 +110,7 @@ def connect_to_server(
 
 @app.command()
 def connect():
-    table = Table("Environment")
-    for env in data:
-        table.add_row(env)
-    console.print(table)
-
+    list_environments()
     environment = select_environment_option()
 
     if environment not in data:
@@ -119,11 +122,7 @@ def connect():
 
 @app.command()
 def addenv():
-    table = Table("Available Environments")
-    for env in data:
-        table.add_row(env)
-    console.print(table)
-
+    list_environments()
     environment = prompt("New Environment name: ")
     if environment in data:
         print(f"[bold red]ERROR: Environment {environment} already exists![/bold red]")
@@ -137,15 +136,9 @@ def addenv():
 
 @app.command()
 def addserver():
-    table = Table("Available Environments")
-    for env in data:
-        table.add_row(env)
-    console.print(table)
+    list_environments()
     environment = select_environment_option()
-    table = Table("Available Servers")
-    for server in data.get(environment, {}):
-        table.add_row(server)
-    console.print(table)
+    list_servers(environment)
 
     server_name = prompt("New Server name: ")
 
