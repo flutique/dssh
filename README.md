@@ -14,7 +14,7 @@ pip install connect-dev-ssh
 ### Add new environment
 
 ```bash
-$ connect_dev_ssh addenv                       
+$ dssh addenv                       
 ┏━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Available Environments ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━┩
@@ -24,7 +24,7 @@ New Environment name: DEV
 
 ### Add new server to an environment
 ```
-$ connect_dev_ssh addserver
+$ dssh addserver
 ┏━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Available Environments ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━┩
@@ -42,7 +42,7 @@ Server hostname: 10.10.0.1
 
 ### Connect to a server
 ```
-$ connect_dev_ssh connect  
+$ dssh connect  
 ┏━━━━━━━━━━━━━┓
 ┃ Environment ┃
 ┡━━━━━━━━━━━━━┩

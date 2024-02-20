@@ -17,4 +17,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
-connect_dev_ssh = "connect_dev_ssh.main:run_cli"
+dssh = "connect_dev_ssh.main:run_cli"
