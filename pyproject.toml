@@ -1,9 +1,17 @@
 [tool.poetry]
 name = "dssh"
-version = "0.4.0"
+version = "0.4.2"
 description = "SSH server manager on the basis of environments"
 authors = ["Saurav Sharma"]
 readme = "README.md"
+maintainers = ["Saurav Sharma"]
+homepage = "https://github.com/sauravsharma1998/dssh"
+repository = "https://github.com/sauravsharma1998/dssh"
+documentation = "https://github.com/sauravsharma1998/dssh"
+keywords = ["ssh", "ssh server"]
+
+[tool.poetry.urls]
+"Bug Tracker" = "https://github.com/sauravsharma1998/dssh/issues"
 
 [tool.poetry.dependencies]
 python = "^3.7.0"
