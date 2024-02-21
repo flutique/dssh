@@ -7,7 +7,7 @@ You can customize your environments/servers config as per your requirements.
 
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install foobar.
 
-```bash
+```
 pip install dssh
 ```
 
@@ -15,7 +15,7 @@ pip install dssh
 
 ### Add new environment
 
-```bash
+```
 $ dssh addenv
 ┏━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Available Environments ┃
@@ -26,7 +26,7 @@ New Environment name: DEV
 
 ### Add new server to an environment
 
-```bash
+```
 $ dssh addserver
 ┏━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Available Environments ┃
@@ -45,7 +45,7 @@ Server hostname: 10.10.0.1
 
 ### Connect to a server
 
-```bash
+```
 $ dssh connect
 ┏━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Available Environments ┃
@@ -62,6 +62,47 @@ Select an environment: DEV
 Select a server: Server1
 Environment:DEV Server:Server1!
 Connecting to username@10.10.0.1! 💥
+```
+
+### Modify config of a server
+
+```
+$ dssh modserver
+┏━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Available Environments ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ DEV                    │
+└────────────────────────┘
+Select an environment: DEV
+┏━━━━━━━━━━━━━━━━━━━┓
+┃ Availbale Servers ┃
+┡━━━━━━━━━━━━━━━━━━━┩
+│ Server1           │
+└───────────────────┘
+Select a server: Server1
+Current Username - user Hostname - host
+New Username(Press enter if no change): nuser
+New Hostname(Press enter if no change): nhost
+Success! 💥
+```
+
+### Remove a server
+
+```
+$ dssh dlserver
+┏━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Available Environments ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ DEV                    │
+└────────────────────────┘
+Select an environment: DEV
+┏━━━━━━━━━━━━━━━━━━━┓
+┃ Availbale Servers ┃
+┡━━━━━━━━━━━━━━━━━━━┩
+│ Server1           │
+└───────────────────┘
+Select a server: Server1
+Success! 💥
 ```
 
 ## Contributing

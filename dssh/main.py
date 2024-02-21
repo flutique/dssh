@@ -62,6 +62,12 @@ def list_servers(environment):
     console.print(table)
 
 
+def update_config(data):
+    PATH = os.path.dirname(__file__)
+    with open(f"{PATH}/config.json", "w") as json_file:
+        json.dump(data, json_file)
+
+
 def ssh_interactive_shell(hostname, username, password=None, port=22):
     try:
         # Spawn SSH session
@@ -98,11 +104,9 @@ def connect_to_server(
     if server_name not in data.get(environment):
         print(f"[bold red]ERROR: Server name {server_name} not found![/bold red]")
         sys.exit()
-
     server_config = data.get(environment, {}).get(server_name)
     user = server_config.get("user")
     host = server_config.get("host")
-
     print(f"[bold yellow]Environment:{environment} Server:{server_name}![/bold yellow]")
     print(f"[bold green]Connecting to {user}@{host}![/bold green] :boom:")
     ssh_interactive_shell(host, user)
@@ -112,11 +116,9 @@ def connect_to_server(
 def connect():
     list_environments()
     environment = select_environment_option()
-
     if environment not in data:
         print(f"[bold red]ERROR: Invalid environment {environment}![/bold red] :boom:")
         sys.exit()
-
     connect_to_server(environment=environment)
 
 
@@ -127,11 +129,8 @@ def addenv():
     if environment in data:
         print(f"[bold red]ERROR: Environment {environment} already exists![/bold red]")
         sys.exit()
-
     data[environment] = {}
-    PATH = os.path.dirname(__file__)
-    with open(f"{PATH}/config.json", "w") as json_file:
-        json.dump(data, json_file)
+    update_config(data)
 
 
 @app.command()
@@ -139,18 +138,43 @@ def addserver():
     list_environments()
     environment = select_environment_option()
     list_servers(environment)
-
     server_name = prompt("New Server name: ")
-
     if server_name in data.get(environment, {}):
         print(f"[bold red]ERROR: Server {server_name} already exists![/bold red]")
         sys.exit()
-
     username = prompt("Server username: ")
     hostname = prompt("Server hostname: ")
     server_data = {"user": username, "host": hostname}
     data[environment][server_name] = server_data
+    update_config(data)
 
-    PATH = os.path.dirname(__file__)
-    with open(f"{PATH}/config.json", "w") as json_file:
-        json.dump(data, json_file)
+
+@app.command()
+def dlserver():
+    list_environments()
+    environment = select_environment_option()
+    list_servers(environment)
+    server_name = select_server_option(environment)
+    del data[environment][server_name]
+    print("[bold green]Success![/bold green] :boom:")
+    update_config(data)
+
+
+@app.command()
+def modserver():
+    list_environments()
+    environment = select_environment_option()
+    list_servers(environment)
+    server_name = select_server_option(environment)
+    server_data = data[environment][server_name]
+    user = server_data.get("user")
+    host = server_data.get("host")
+    print(f"Current Username - [bold]{user}[/bold] Hostname - [bold]{host}[/bold]")
+    new_user = prompt("New Username(Press enter if no change): ")
+    new_host = prompt("New Hostname(Press enter if no change): ")
+    if new_user:
+        data[environment][server_name]["user"] = new_user
+    if new_host:
+        data[environment][server_name]["host"] = new_host
+    print("[bold green]Success![/bold green] :boom:")
+    update_config(data)
