@@ -38,6 +38,7 @@ jobs:
       with:
         options: "--check --verbose"
         version: "22.1.0"
+        src: "./dssh"
     # - name: Test with pytest
     #   run: |
     #     pytest
