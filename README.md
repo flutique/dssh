@@ -1,6 +1,7 @@
 # Connect Dev SSH
 
-This is simple and elegant python module that helps you to manage your ssh server based on environment. Like DEV, UAT, PRE-PROD etc.
+Simple and elegant python module that helps you to manage your ssh server based on environment. Like DEV, UAT, PRE-PROD etc.
+You can customize your environments/servers config as per your requirements.
 
 ## Installation
 
@@ -11,10 +12,11 @@ pip install dssh
 ```
 
 ## Usage
+
 ### Add new environment
 
 ```bash
-$ dssh addenv                       
+$ dssh addenv
 ┏━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Available Environments ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━┩
@@ -23,6 +25,7 @@ New Environment name: DEV
 ```
 
 ### Add new server to an environment
+
 ```bash
 $ dssh addserver
 ┏━━━━━━━━━━━━━━━━━━━━━━━━┓
@@ -41,6 +44,7 @@ Server hostname: 10.10.0.1
 ```
 
 ### Connect to a server
+
 ```bash
 $ dssh connect
 ┏━━━━━━━━━━━━━━━━━━━━━━━━┓
@@ -59,7 +63,6 @@ Select a server: Server1
 Environment:DEV Server:Server1!
 Connecting to username@10.10.0.1! 💥
 ```
-
 
 ## Contributing
 
