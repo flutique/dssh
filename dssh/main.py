@@ -2,6 +2,7 @@ import json
 import os
 import os.path
 import sys
+from pathlib import Path
 
 import pexpect
 import typer
@@ -68,11 +69,34 @@ def update_config(data):
         json.dump(data, json_file)
 
 
-def ssh_interactive_shell(hostname, username, password=None, port=22):
+def is_valid_file(file_path: str):
+    if Path(file_path) and Path(file_path).is_file():
+        pass
+    else:
+        print(f"File does not exist or is not a file at location {file_path}")
+        sys.exit()
+
+
+def ssh_interactive_shell(
+    hostname, username, bastion_server_data, password=None, port=22, key_file_path=None
+):
     try:
         # Spawn SSH session
         ssh_newkey = "Are you sure you want to continue connecting"
-        p = pexpect.spawn(f"ssh -p {port} {username}@{hostname}")
+        flags = f" -p {port} "
+        message = None
+
+        if key_file_path:
+            flags += f" -i {key_file_path} "
+        if bastion_server_data:
+            bastion_server_user = bastion_server_data.get("user")
+            bastion_server_host = bastion_server_data.get("host")
+            flags += f" -J {bastion_server_user}@{bastion_server_host} "
+            message = f"[bold blue]Connecting to target server {username}@{hostname} via bastion server {bastion_server_user}@{bastion_server_host}[/bold blue] :boom:"
+        server_connection_command = f"ssh {flags} {username}@{hostname}"
+        p = pexpect.spawn(server_connection_command)
+        if message:
+            print(message)
 
         # Expect SSH password prompt
         i = p.expect([ssh_newkey, "password:", pexpect.EOF, pexpect.TIMEOUT])
@@ -88,6 +112,10 @@ def ssh_interactive_shell(hostname, username, password=None, port=22):
         # Interactive shell
         p.interact()
 
+    except pexpect.exceptions.TIMEOUT:
+        print("Timeout occurred. Unable to connect to SSH server.")
+    except pexpect.exceptions.EOF:
+        print("EOF occurred. SSH connection closed unexpectedly.")
     except Exception as e:
         print(f"An error occurred: {str(e)}")
 
@@ -107,9 +135,11 @@ def connect_to_server(
     server_config = data.get(environment, {}).get(server_name)
     user = server_config.get("user")
     host = server_config.get("host")
+    key_file_path = server_config.get("key_file")
+    bastion_server_data = server_config.get("bastion_data", {})
     print(f"[bold yellow]Environment:{environment} Server:{server_name}![/bold yellow]")
     print(f"[bold green]Connecting to {user}@{host}![/bold green] :boom:")
-    ssh_interactive_shell(host, user)
+    ssh_interactive_shell(host, user, bastion_server_data, key_file_path=key_file_path)
 
 
 @app.command()
@@ -134,6 +164,14 @@ def addenv():
 
 
 @app.command()
+def dlenv():
+    list_environments()
+    environment = select_environment_option()
+    del data[environment]
+    update_config(data)
+
+
+@app.command()
 def addserver():
     list_environments()
     environment = select_environment_option()
@@ -144,7 +182,24 @@ def addserver():
         sys.exit()
     username = prompt("Server username: ")
     hostname = prompt("Server hostname: ")
-    server_data = {"user": username, "host": hostname}
+    key_file = prompt(
+        "Custom key path(path should be absolute)(Press enter if no change): "
+    )
+    if key_file:
+        is_valid_file(key_file)
+    bastion_server_data = {}
+    is_bastion = prompt("Does this server use bastion server y/n: ")
+    if is_bastion == "y":
+        bastion_username = prompt("Bastion username: ")
+        bastion_hostname = prompt("Bastion hostname: ")
+        bastion_server_data["user"] = bastion_username
+        bastion_server_data["host"] = bastion_hostname
+    server_data = {
+        "user": username,
+        "host": hostname,
+        "bastion_data": bastion_server_data,
+        "key_file": key_file,
+    }
     data[environment][server_name] = server_data
     update_config(data)
 
@@ -172,9 +227,26 @@ def modserver():
     print(f"Current Username - [bold]{user}[/bold] Hostname - [bold]{host}[/bold]")
     new_user = prompt("New Username(Press enter if no change): ")
     new_host = prompt("New Hostname(Press enter if no change): ")
+    new_keyfile = prompt(
+        "New key path(path should be absolute)(Press enter if no change): "
+    )
     if new_user:
-        data[environment][server_name]["user"] = new_user
+        server_data["user"] = new_user
     if new_host:
-        data[environment][server_name]["host"] = new_host
+        server_data["host"] = new_host
+    if new_keyfile:
+        is_valid_file(new_keyfile)
+        server_data["key_file"] = new_keyfile
+    bastion_server_data = server_data.get("bastion_data", {})
+    is_bastion = prompt("Do you want to update bastion server(y/n): ")
+    if is_bastion.lower() == "y":
+        bastion_username = prompt("New Bastion username(Press enter if no change): ")
+        bastion_hostname = prompt("New Bastion hostname(Press enter if no change): ")
+        if bastion_username:
+            bastion_server_data["user"] = bastion_username
+        if bastion_hostname:
+            bastion_server_data["host"] = bastion_hostname
+        server_data["bastion_data"] = bastion_server_data
+    data[environment][server_name] = server_data
     print("[bold green]Success![/bold green] :boom:")
     update_config(data)
