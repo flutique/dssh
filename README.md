@@ -1,6 +1,6 @@
 # Connect Dev SSH
 
-Simple and elegant python module that helps you to manage your ssh server based on environment. Like DEV, UAT, PRE-PROD etc.
+Simple and elegant python module that helps you to manage your ssh server based on environment. Like DEV, UAT, PRE-PROD, PROD etc.
 You can customize your environments/servers config as per your requirements.
 
 ## Installation
@@ -16,7 +16,12 @@ pip install dssh
 ### Add new environment
 
 ```
-$ dssh addenv
+dssh addenv
+```
+
+Output:
+
+```
 ┏━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Available Environments ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━┩
@@ -24,10 +29,33 @@ $ dssh addenv
 New Environment name: DEV
 ```
 
+### Delete an environment
+
+```
+dssh dlenv
+```
+
+Output:
+
+```
+┏━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃ Available Environments ┃
+┡━━━━━━━━━━━━━━━━━━━━━━━━┩
+│ DEV                    │
+└────────────────────────┘
+Select an environment: DEV
+```
+
 ### Add new server to an environment
 
 ```
-$ dssh addserver
+dssh addserver
+```
+
+Output:
+
+```
+dssh addserver
 ┏━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Available Environments ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━┩
@@ -35,18 +63,25 @@ $ dssh addserver
 └────────────────────────┘
 Select an environment: DEV
 ┏━━━━━━━━━━━━━━━━━━━┓
-┃ Available Servers ┃
+┃ Availbale Servers ┃
 ┡━━━━━━━━━━━━━━━━━━━┩
 └───────────────────┘
 New Server name: Server1
 Server username: username
 Server hostname: 10.10.0.1
+Custom key path(path should be absolute)(Press enter if no change):
+Does this server use bastion server y/n: n
 ```
 
 ### Connect to a server
 
 ```
-$ dssh connect
+dssh connect
+```
+
+Output:
+
+```
 ┏━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Available Environments ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━┩
@@ -67,7 +102,13 @@ Connecting to username@10.10.0.1! 💥
 ### Modify config of a server
 
 ```
-$ dssh modserver
+dssh modserver
+```
+
+Output:
+
+```
+dssh modserver                    
 ┏━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Available Environments ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━┩
@@ -80,16 +121,23 @@ Select an environment: DEV
 │ Server1           │
 └───────────────────┘
 Select a server: Server1
-Current Username - user Hostname - host
-New Username(Press enter if no change): nuser
-New Hostname(Press enter if no change): nhost
+Current Username - username Hostname - 10.10.0.1
+New Username(Press enter if no change): nusername
+New Hostname(Press enter if no change): 10.10.0.2
+New key path(path should be absolute)(Press enter if no change):
+Do you want to update bastion server(y/n): n
 Success! 💥
 ```
 
 ### Remove a server
 
 ```
-$ dssh dlserver
+dssh dlserver
+```
+
+Output:
+
+```
 ┏━━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃ Available Environments ┃
 ┡━━━━━━━━━━━━━━━━━━━━━━━━┩

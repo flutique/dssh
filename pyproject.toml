@@ -1,17 +1,17 @@
 [tool.poetry]
 name = "dssh"
-version = "0.4.4"
+version = "0.4.6"
 description = "SSH server manager on the basis of environments"
 authors = ["Saurav Sharma"]
 readme = "README.md"
 maintainers = ["Saurav Sharma"]
-homepage = "https://github.com/sauravsharma1998/dssh"
-repository = "https://github.com/sauravsharma1998/dssh"
-documentation = "https://github.com/sauravsharma1998/dssh"
+homepage = "https://github.com/flutique/dssh"
+repository = "https://github.com/flutique/dssh"
+documentation = "https://github.com/flutique/dssh"
 keywords = ["ssh", "ssh server"]
 
 [tool.poetry.urls]
-"Bug Tracker" = "https://github.com/sauravsharma1998/dssh/issues"
+"Bug Tracker" = "https://github.com/flutique/dssh/issues"
 
 [tool.poetry.dependencies]
 python = "^3.7.0"
